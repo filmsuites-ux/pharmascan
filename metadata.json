@@ -1,0 +1,10 @@
+{
+  "name": "PharmaScan - Pharmacy Bill Scanner & Purchase Management",
+  "description": "Pharmacy purchase bill scanner, OCR extraction, automatic agency detection, payment ledger, price-change alerts, and near-expiry management system.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

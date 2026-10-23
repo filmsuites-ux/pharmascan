@@ -1,0 +1,439 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   SPATIAL UI DESIGN SYSTEM - PHARMASCAN
+   VisionOS / Next-Gen Fluid Spatial OS Aesthetics
+   - Dark navy / charcoal layered canvases
+   - Translucent frosted glassmorphism with specular edge highlights
+   - Multi-layer volumetric depth and soft ambient luminescent glows
+   - High-contrast tabular numerals for pharmacy accounting
+   ============================================================================ */
+
+:root {
+  --spatial-bg: #030712;
+  --spatial-canvas-deep: #020617;
+  --spatial-surface-1: rgba(13, 20, 36, 0.72);
+  --spatial-surface-2: rgba(18, 28, 50, 0.82);
+  --spatial-surface-3: rgba(26, 38, 66, 0.92);
+  --spatial-border: rgba(255, 255, 255, 0.08);
+  --spatial-border-highlight: rgba(255, 255, 255, 0.16);
+  --spatial-border-active: rgba(56, 189, 248, 0.35);
+
+  /* Spatial Accents */
+  --spatial-cyan: #38bdf8;
+  --spatial-blue: #3b82f6;
+  --spatial-indigo: #6366f1;
+  --spatial-violet: #8b5cf6;
+  --spatial-emerald: #10b981;
+  --spatial-amber: #f59e0b;
+  --spatial-rose: #f43f5e;
+}
+
+/* Base Body & Spatial Canvas */
+body {
+  background-color: #030712;
+  color: #f1f5f9;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Atmospheric Ambient Spatial Canvas (Fixed Background Mesh) */
+.spatial-mesh-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-color: #030712;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 82% 24%, rgba(139, 92, 246, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 50% 68%, rgba(59, 130, 246, 0.05) 0%, transparent 55%),
+    radial-gradient(circle at 88% 88%, rgba(16, 185, 129, 0.04) 0%, transparent 45%);
+}
+
+/* Subtle Spatial Grid Texture */
+.spatial-grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-size: 32px 32px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+}
+
+/* ============================================================================
+   SURFACES & GLASSMORPHISM
+   ============================================================================ */
+
+/* Primary Spatial Card (Layer 1) */
+.spatial-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(10, 15, 29, 0.65) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    0 4px 12px -2px rgba(2, 6, 23, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Interactive Floating Card with Elevation */
+.spatial-card-interactive {
+  cursor: pointer;
+}
+
+.spatial-card-interactive:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.25);
+  background: linear-gradient(135deg, rgba(20, 30, 55, 0.82) 0%, rgba(13, 20, 38, 0.75) 100%);
+  box-shadow:
+    0 18px 38px -10px rgba(0, 0, 0, 0.65),
+    0 8px 20px -4px rgba(56, 189, 248, 0.12),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Spatial Glass Panel (for larger containers, table wrappers, tabs) */
+.spatial-panel {
+  background: linear-gradient(180deg, rgba(13, 20, 36, 0.78) 0%, rgba(8, 13, 25, 0.72) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 16px 40px -12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+}
+
+/* Spatial Elevated Dialog / Modal Window (Layer 3) */
+.spatial-modal {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.94) 0%, rgba(9, 14, 28, 0.96) 100%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 30px 70px -15px rgba(0, 0, 0, 0.85),
+    0 0 50px -10px rgba(56, 189, 248, 0.12),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  border-radius: 1.75rem;
+}
+
+/* Spatial Top Dock / Header */
+.spatial-dock {
+  background: rgba(8, 13, 26, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Floating Navigation Island */
+.spatial-nav-pill {
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spatial-nav-pill-active {
+  color: #38bdf8;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.16) 0%, rgba(56, 189, 248, 0.06) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow:
+    0 2px 12px -2px rgba(56, 189, 248, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================================
+   SPATIAL BUTTONS & CONTROLS
+   ============================================================================ */
+
+/* Primary Action Button (Luminescent Cyan-Blue) */
+.spatial-btn-primary {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #4f46e5 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 6px 20px -4px rgba(37, 99, 235, 0.45),
+    0 2px 6px 0 rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  border-radius: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.spatial-btn-primary:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 50%, #4338ca 100%);
+  box-shadow:
+    0 10px 26px -4px rgba(37, 99, 235, 0.6),
+    0 4px 10px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
+}
+
+.spatial-btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    0 3px 10px -2px rgba(37, 99, 235, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Emerald Action Button (Payments, Save, Confirm) */
+.spatial-btn-emerald {
+  background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 6px 20px -4px rgba(13, 148, 136, 0.45),
+    0 2px 6px 0 rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  border-radius: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.spatial-btn-emerald:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #047857 0%, #0f766e 100%);
+  box-shadow:
+    0 10px 26px -4px rgba(13, 148, 136, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
+}
+
+/* Secondary Frosted Glass Button */
+.spatial-btn-secondary {
+  background: rgba(30, 41, 59, 0.65);
+  color: #e2e8f0;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  border-radius: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.spatial-btn-secondary:hover {
+  background: rgba(45, 59, 85, 0.8);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 18px -4px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Spatial Translucent Input */
+.spatial-input {
+  background: rgba(10, 15, 29, 0.65);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+  border-radius: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spatial-input:focus {
+  outline: none;
+  background: rgba(14, 21, 40, 0.85);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow:
+    0 0 0 3px rgba(56, 189, 248, 0.15),
+    inset 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.spatial-input::placeholder {
+  color: #64748b;
+}
+
+/* ============================================================================
+   KPI & STAT CARDS (Spatial Floating Gauges)
+   ============================================================================ */
+
+.spatial-stat-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(16, 24, 44, 0.8) 0%, rgba(10, 16, 32, 0.7) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 12px 30px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spatial-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  opacity: 0.7;
+}
+
+.spatial-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow:
+    0 20px 40px -12px rgba(0, 0, 0, 0.7),
+    0 8px 24px -4px rgba(56, 189, 248, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================================================
+   CUSTOM SPATIAL SCROLLBARS
+   ============================================================================ */
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(3, 7, 18, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
+}
+
+/* Tabular Numerals by Default for Financial Rigor */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   UNIVERSAL SPATIAL ELEVATION FOR EXISTING COMPONENTS
+   Upgrades all existing slate-900 / slate-950 cards and containers to frosted
+   translucent glass with specular top-edge highlights and subtle border radiance
+   ============================================================================ */
+
+/* Surface Layer 1: Frosted Spatial Glass */
+.bg-slate-900 {
+  background-color: rgba(13, 20, 36, 0.78) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Surface Layer 2: Deeper Frosted Canvas */
+.bg-slate-950 {
+  background-color: rgba(6, 11, 22, 0.88) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.bg-slate-950\/70,
+.bg-slate-950\/80,
+.bg-slate-950\/90 {
+  background-color: rgba(6, 11, 22, 0.75) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.bg-slate-800 {
+  background-color: rgba(26, 38, 64, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.bg-slate-800\/60,
+.bg-slate-800\/80 {
+  background-color: rgba(26, 38, 64, 0.55) !important;
+}
+
+/* Translucent Hairline Borders with Subtle Specular Light */
+.border-slate-800 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.border-slate-700 {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Subtle Interactive Hover Elevation for Cards */
+.hover\:bg-slate-850:hover,
+.hover\:bg-slate-800:hover {
+  background-color: rgba(30, 44, 75, 0.85) !important;
+  box-shadow:
+    0 14px 34px -8px rgba(0, 0, 0, 0.6),
+    0 0 20px -4px rgba(56, 189, 248, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+}
+
+/* Translucent Inputs & Form Elements */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  background-color: rgba(8, 14, 28, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow:
+    0 0 0 3px rgba(56, 189, 248, 0.18),
+    inset 0 2px 4px 0 rgba(0, 0, 0, 0.4) !important;
+  background-color: rgba(12, 19, 38, 0.85) !important;
+}
+
+/* Tables in Spatial UI */
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+thead th {
+  background-color: rgba(10, 16, 32, 0.85) !important;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+}
+
+tbody tr {
+  transition: background-color 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+tbody tr:hover {
+  background-color: rgba(30, 45, 75, 0.45) !important;
+}
+
+tbody td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
