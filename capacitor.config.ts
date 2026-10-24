@@ -1,41 +1,10 @@
-export interface CapacitorConfig {
-  appId: string;
-  appName: string;
-  webDir: string;
-  server?: {
-    androidScheme?: string;
-  };
-  android?: {
-    allowMixedContent?: boolean;
-    captureInput?: boolean;
-    webContentsDebuggingEnabled?: boolean;
-  };
-  plugins?: {
-    [key: string]: any;
-  };
-}
+CAP_V=$(npm view @capacitor/core version)
 
-const config: CapacitorConfig = {
-  appId: 'com.pharmascan.app',
-  appName: 'PharmaScan',
-  webDir: 'dist',
-  server: {
-    androidScheme: 'https',
-  },
-  android: {
-    allowMixedContent: true,
-    captureInput: true,
-    webContentsDebuggingEnabled: true,
-  },
-  plugins: {
-    CapacitorHttp: {
-      enabled: true,
-    },
-    App: {},
-    Share: {},
-    Filesystem: {},
-    Camera: {},
-  },
-};
-
-export default config;
+npm install --no-audit --no-fund --legacy-peer-deps \
+  @capacitor/core@"$CAP_V" \
+  @capacitor/cli@"$CAP_V" \
+  @capacitor/android@"$CAP_V" \
+  @capacitor/camera@"$CAP_V" \
+  @capacitor/share@"$CAP_V" \
+  @capacitor/filesystem@"$CAP_V" \
+  @capacitor/app@"$CAP_V"
