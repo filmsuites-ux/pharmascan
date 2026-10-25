@@ -1,10 +1,13 @@
-CAP_V=$(npm view @capacitor/core version)
+import type { CapacitorConfig } from '@capacitor/cli';
 
-npm install --no-audit --no-fund --legacy-peer-deps \
-  @capacitor/core@"$CAP_V" \
-  @capacitor/cli@"$CAP_V" \
-  @capacitor/android@"$CAP_V" \
-  @capacitor/camera@"$CAP_V" \
-  @capacitor/share@"$CAP_V" \
-  @capacitor/filesystem@"$CAP_V" \
-  @capacitor/app@"$CAP_V"
+const config: CapacitorConfig = {
+  appId: 'com.pharmascan.app',
+  appName: 'PharmaScan',
+  webDir: 'dist',
+  bundledWebRuntime: false,
+  server: {
+    androidScheme: 'https',
+  },
+};
+
+export default config;
