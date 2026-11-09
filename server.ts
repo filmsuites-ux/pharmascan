@@ -518,7 +518,7 @@ app.post('/api/cloud-backup/save', (req, res) => {
       return res.status(400).json({ error: 'userEmail and backupData are required' });
     }
 
-    const cleanEmail = userEmail.replace(/[^a-zA-Z0-9@._-]/g, '_');
+    const cleanEmail = userEmail.replace(/[^a-zA-Z0-9@._-]/g, '_').replace(/\.{2,}/g, '_').replace(/_+/g, '_');
     const userDir = path.join(BACKUP_DIR, cleanEmail);
     if (!fs.existsSync(userDir)) {
       fs.mkdirSync(userDir, { recursive: true });
@@ -558,7 +558,7 @@ app.get('/api/cloud-backup/latest', (req, res) => {
       return res.status(400).json({ error: 'email query parameter is required' });
     }
 
-    const cleanEmail = userEmail.replace(/[^a-zA-Z0-9@._-]/g, '_');
+    const cleanEmail = userEmail.replace(/[^a-zA-Z0-9@._-]/g, '_').replace(/\.{2,}/g, '_').replace(/_+/g, '_');
     const userDir = path.join(BACKUP_DIR, cleanEmail);
     const latestFilePath = path.join(userDir, 'latest.json');
 
@@ -586,7 +586,7 @@ app.post('/api/cloud-backup/reset', (req, res) => {
       return res.status(400).json({ error: 'userEmail is required' });
     }
 
-    const cleanEmail = userEmail.replace(/[^a-zA-Z0-9@._-]/g, '_');
+    const cleanEmail = userEmail.replace(/[^a-zA-Z0-9@._-]/g, '_').replace(/\.{2,}/g, '_').replace(/_+/g, '_');
     const userDir = path.join(BACKUP_DIR, cleanEmail);
     const latestFilePath = path.join(userDir, 'latest.json');
 

@@ -4,7 +4,6 @@ const config: CapacitorConfig = {
   appId: 'com.pharmascan.app',
   appName: 'PharmaScan',
   webDir: 'dist',
-  bundledWebRuntime: false,
   server: {
     androidScheme: 'https',
   },

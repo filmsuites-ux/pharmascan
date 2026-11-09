@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx watch server.ts",
     "build": "vite build",
+    "test": "tsx --test test/**/*.test.ts",
     "preview": "vite preview --host 0.0.0.0 --port 4173",
     "start": "node server.ts"
   },
