@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PharmaScan</string>
+    <string name="title_activity_main">PharmaScan</string>
+    <string name="package_name">com.pharmascan.app</string>
+    <string name="custom_url_scheme">com.pharmascan.app</string>
+</resources>
