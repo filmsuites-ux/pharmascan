@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>PharmaScan - Pharmacy Bill Scanner & Purchase Management</title>
+    <meta name="description" content="Pharmacy purchase bill scanner, OCR extraction, automatic agency detection, payment ledger, price-change alerts, and near-expiry management system." />
+    <meta property="og:title" content="PharmaScan - Pharmacy Bill Scanner & Purchase Management" />
+    <meta property="og:description" content="Pharmacy purchase bill scanner, OCR extraction, automatic agency detection, payment ledger, price-change alerts, and near-expiry management system." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#020617" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PharmaScan" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="./assets/index-DQvaoVU-.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-jETMO_g2.css">
+  </head>
+  <body class="bg-slate-950 text-slate-100 antialiased font-sans">
+    <!-- Root Mounting Container with Initial Visual Loader to Prevent Blank Screen -->
+    <div id="root">
+      <div style="min-height: 100vh; background-color: #020617; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f8fafc; padding: 24px; text-align: center;">
+        <div style="width: 44px; height: 44px; border: 3.5px solid #10b981; border-top-color: transparent; border-radius: 50%; animation: pscan-spin 0.9s linear infinite; margin-bottom: 16px;"></div>
+        <div style="font-weight: 800; font-size: 17px; letter-spacing: -0.01em; margin-bottom: 6px; color: #ffffff;">PharmaScan Loading</div>
+        <div style="font-size: 12px; color: #94a3b8; max-width: 290px; line-height: 1.5;">Preparing pharmacy purchase ledger and offline scanner...</div>
+        <style>
+          @keyframes pscan-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        </style>
+      </div>
+    </div>
+
+    <!-- Self-Healing & Service Worker Lifecycle Management -->
+    <script>
+      (function() {
+        // Fallback error UI if a critical runtime error occurs before React mounts
+        window.addEventListener('error', function(e) {
+          console.error('[Window Error Trapped]', e);
+          var root = document.getElementById('root');
+          if (root && root.querySelector('.pscan-spin')) {
+            root.innerHTML = '<div style="min-height: 100vh; background: #020617; color: #fff; padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-family: sans-serif;">' +
+              '<div style="background: #0f172a; border: 1px solid #ef4444; border-radius: 16px; padding: 20px; max-width: 360px;">' +
+              '<div style="color: #ef4444; font-weight: bold; font-size: 15px; margin-bottom: 8px;">Startup Issue Detected</div>' +
+              '<div style="font-size: 12px; color: #cbd5e1; margin-bottom: 14px;">' + (e.message || 'Script failed to load') + '</div>' +
+              '<button onclick="location.reload()" style="background: #10b981; color: #020617; border: none; font-weight: bold; padding: 8px 18px; border-radius: 8px; font-size: 12px; cursor: pointer;">Reload Application</button>' +
+              '</div></div>';
+          }
+        });
+
+        // Detect AI Studio Preview iframe environment
+        var isInIframe = false;
+        try {
+          isInIframe = window.self !== window.top;
+        } catch(e) {
+          isInIframe = true;
+        }
+
+        // Clean up stale or conflicting service workers in preview iframes to prevent Vite dev script blocking
+        if ('serviceWorker' in navigator) {
+          if (isInIframe || window.location.hostname === 'localhost') {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+              for (var i = 0; i < registrations.length; i++) {
+                registrations[i].unregister();
+              }
+            }).catch(function() {});
+            if ('caches' in window) {
+              caches.keys().then(function(keys) {
+                keys.forEach(function(k) { caches.delete(k); });
+              }).catch(function() {});
+            }
+          } else {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js').catch(function(err) {
+                console.warn('[SW Registration Notice]', err);
+              });
+            });
+          }
+        }
+      })();
+    </script>
+
+    <!-- Main React Entry Point -->
+  </body>
+</html>
