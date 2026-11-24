@@ -195,7 +195,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               Live Pharmacy Intelligence
             </span>
             <span className="text-xs text-slate-400">
-              • System Date: <strong className="text-slate-200">01-Oct-2026</strong>
+              • Today: <strong className="text-slate-200">{formatScheduleDate(getAppTodayDate())}</strong>
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
