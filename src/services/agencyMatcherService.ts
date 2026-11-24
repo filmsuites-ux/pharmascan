@@ -17,8 +17,9 @@ export interface AgencyMatchResult {
 export function cleanAgencyName(name: string): string {
   if (!name) return '';
   return name
-    .replace(/\b(PVT|LTD|PRIVATE|LIMITED|DISTRIBUTORS|DISTRIBUTOR|DIST|AGENCIES|AGENCY|PHARMA|PHARMACEUTICALS|ENTERPRISES|HEALTHCARE|MEDICAL|MEDICINE|MEDICINES|STORE|STORES|STOCKIST|STOCKISTS|CO|COMPANY|AND|&|THE|OF|CARE|DRUG|DRUGS)\b/gi, '')
-    .replace(/[^A-Z0-9]/gi, '')
+    .replace(/[.,\-_/\\()&]/g, ' ')
+    .replace(/\b(PVT|LTD|PRIVATE|LIMITED|DISTRIBUTORS|DISTRIBUTOR|DIST|AGENCIES|AGENCY|PHARMA|PHARMACEUTICALS|ENTERPRISES|HEALTHCARE|MEDICAL|MEDICINE|MEDICINES|STORE|STORES|STOCKIST|STOCKISTS|CO|COMPANY|AND|THE|OF|CARE|DRUG|DRUGS|CORP|TRADERS|TRADING|SURGICALS|SURGICAL)\b/gi, '')
+    .replace(/\s+/g, '')
     .toUpperCase()
     .trim();
 }
@@ -127,6 +128,25 @@ export function matchAgency(
         reason: `Matched registered agency "${match.name}" by exact GSTIN (${match.gstin}).`,
         isUncertain: false,
       };
+    }
+
+    // 1b. Embedded PAN match (Chars 2-12 in GSTIN: captures bills where OCR confused check digits)
+    if (cleanGstin.length >= 12) {
+      const billPan = cleanGstin.slice(2, 12);
+      const panMatch = registeredAgencies.find((a) => {
+        const aGstin = (a.gstin || '').trim().toUpperCase();
+        return aGstin.length >= 12 && aGstin.slice(2, 12) === billPan;
+      });
+      if (panMatch) {
+        return {
+          matchedAgency: panMatch,
+          confidence: 'HIGH',
+          matchType: 'EXACT_GSTIN',
+          suggestedName: panMatch.name,
+          reason: `Matched registered agency "${panMatch.name}" via PAN entity alignment (${billPan}).`,
+          isUncertain: false,
+        };
+      }
     }
   }
 
