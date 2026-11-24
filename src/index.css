@@ -31,39 +31,58 @@
 
 /* Base Body & Spatial Canvas */
 body {
-  background-color: #030712;
+  background: radial-gradient(circle at 50% 0%, #0c1e30 0%, #071524 35%, #040d18 70%, #02070e 100%);
   color: #f1f5f9;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
-/* Atmospheric Ambient Spatial Canvas (Fixed Background Mesh) */
+/* Atmospheric Ambient Spatial Canvas (Luminous Mesh Auroras & Glows) */
 .spatial-mesh-background {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-color: #030712;
+  background-color: #030a14;
   background-image:
-    radial-gradient(circle at 18% 12%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 82% 24%, rgba(139, 92, 246, 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 50% 68%, rgba(59, 130, 246, 0.05) 0%, transparent 55%),
-    radial-gradient(circle at 88% 88%, rgba(16, 185, 129, 0.04) 0%, transparent 45%);
+    radial-gradient(circle at 12% 15%, rgba(16, 185, 129, 0.22) 0%, rgba(6, 182, 212, 0.15) 28%, transparent 55%),
+    radial-gradient(circle at 88% 18%, rgba(99, 102, 241, 0.24) 0%, rgba(139, 92, 246, 0.16) 32%, transparent 60%),
+    radial-gradient(circle at 50% 45%, rgba(14, 165, 233, 0.14) 0%, transparent 65%),
+    radial-gradient(circle at 18% 85%, rgba(244, 63, 94, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 82% 82%, rgba(16, 185, 129, 0.18) 0%, rgba(20, 184, 166, 0.12) 25%, transparent 55%);
+  animation: pscan-aurora 18s ease-in-out infinite alternate;
 }
 
-/* Subtle Spatial Grid Texture */
+@keyframes pscan-aurora {
+  0% {
+    transform: scale(1) translate(0, 0);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.05) translate(-1%, 1.5%);
+    filter: brightness(1.12);
+  }
+  100% {
+    transform: scale(1) translate(1%, -1%);
+    filter: brightness(1.04);
+  }
+}
+
+/* Pharmacy Dot-Matrix & Geometric Accent Overlay */
 .spatial-grid-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.025;
-  background-size: 32px 32px;
+  opacity: 0.55;
+  background-size: 36px 36px;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+    radial-gradient(rgba(56, 189, 248, 0.16) 1.2px, transparent 1.2px),
+    radial-gradient(rgba(16, 185, 129, 0.12) 1.2px, transparent 1.2px);
+  background-position: 0 0, 18px 18px;
 }
 
 /* ============================================================================
@@ -72,14 +91,15 @@ body {
 
 /* Primary Spatial Card (Layer 1) */
 .spatial-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(10, 15, 29, 0.65) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(13, 27, 46, 0.78) 0%, rgba(8, 18, 33, 0.72) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.14);
   box-shadow:
-    0 10px 30px -10px rgba(0, 0, 0, 0.5),
-    0 4px 12px -2px rgba(2, 6, 23, 0.4),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+    0 12px 36px -10px rgba(0, 0, 0, 0.6),
+    0 4px 16px -2px rgba(2, 6, 23, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+    inset 0 0 20px 0 rgba(56, 189, 248, 0.03);
   border-radius: 1.25rem;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -90,24 +110,24 @@ body {
 }
 
 .spatial-card-interactive:hover {
-  transform: translateY(-2px);
-  border-color: rgba(56, 189, 248, 0.25);
-  background: linear-gradient(135deg, rgba(20, 30, 55, 0.82) 0%, rgba(13, 20, 38, 0.75) 100%);
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.4);
+  background: linear-gradient(135deg, rgba(18, 36, 62, 0.88) 0%, rgba(11, 24, 44, 0.82) 100%);
   box-shadow:
-    0 18px 38px -10px rgba(0, 0, 0, 0.65),
-    0 8px 20px -4px rgba(56, 189, 248, 0.12),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    0 20px 45px -10px rgba(0, 0, 0, 0.75),
+    0 8px 25px -4px rgba(56, 189, 248, 0.22),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
 }
 
 /* Spatial Glass Panel (for larger containers, table wrappers, tabs) */
 .spatial-panel {
-  background: linear-gradient(180deg, rgba(13, 20, 36, 0.78) 0%, rgba(8, 13, 25, 0.72) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(12, 25, 44, 0.84) 0%, rgba(7, 16, 30, 0.78) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(56, 189, 248, 0.12);
   box-shadow:
-    0 16px 40px -12px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    0 18px 48px -12px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
   border-radius: 1.5rem;
 }
 

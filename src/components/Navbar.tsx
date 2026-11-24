@@ -15,6 +15,7 @@ import {
   Sparkles,
   Smartphone,
   RotateCcw,
+  LogOut,
 } from 'lucide-react';
 import { OverallStats, PharmacyUserSession } from '../types/pharmacy';
 import { NotificationDrawer } from './notifications/NotificationDrawer';
@@ -31,6 +32,7 @@ interface NavbarProps {
   onOpenDiagnostics?: () => void;
   onOpenShareApk?: () => void;
   onOpenDatabaseReset?: () => void;
+  onLogout?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -43,6 +45,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenDiagnostics,
   onOpenShareApk,
   onOpenDatabaseReset,
+  onLogout,
 }) => {
   const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -218,12 +221,26 @@ export const Navbar: React.FC<NavbarProps> = ({
               {onOpenDatabaseReset && (
                 <button
                   onClick={onOpenDatabaseReset}
-                  className="px-2 py-1.5 bg-slate-900/70 hover:bg-slate-800/80 text-slate-400 hover:text-rose-400 rounded-xl border border-white/10 hover:border-rose-500/30 transition-all flex items-center gap-1.5 text-xs cursor-pointer group"
+                  className="px-2 py-1.5 bg-slate-900/70 hover:bg-slate-800/80 text-slate-400 hover:text-amber-400 rounded-xl border border-white/10 hover:border-amber-500/30 transition-all flex items-center gap-1.5 text-xs cursor-pointer group"
                   title="Reset Database & Clean Start"
                 >
-                  <RotateCcw className="w-3.5 h-3.5 text-rose-400/80 group-hover:-rotate-90 transition-transform" />
+                  <RotateCcw className="w-3.5 h-3.5 text-amber-400/80 group-hover:-rotate-90 transition-transform" />
                   <span className="hidden xl:inline text-[11px] font-semibold text-slate-400">
                     Reset
+                  </span>
+                </button>
+              )}
+
+              {/* Dedicated User Logout Button */}
+              {onLogout && (
+                <button
+                  onClick={onLogout}
+                  className="px-2.5 py-1.5 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 hover:text-white rounded-xl border border-rose-500/30 hover:border-rose-400/60 transition-all flex items-center gap-1.5 text-xs cursor-pointer group shadow-sm shadow-rose-950/40"
+                  title="Logout from Pharmacy Session"
+                >
+                  <LogOut className="w-3.5 h-3.5 text-rose-400 group-hover:scale-110 transition-transform" />
+                  <span className="hidden sm:inline text-[11px] font-bold text-rose-200">
+                    Logout
                   </span>
                 </button>
               )}
@@ -244,6 +261,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Mobile Secondary Nav */}
           <div className="flex lg:hidden overflow-x-auto py-2 border-t border-white/5 gap-1.5 scrollbar-none items-center">
+            {onLogout && (
+              <button
+                onClick={onLogout}
+                className="px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap bg-rose-950/70 hover:bg-rose-900/80 text-rose-300 border border-rose-500/40 flex items-center gap-1 shrink-0 cursor-pointer"
+                title="Logout"
+              >
+                <LogOut className="w-3 h-3 text-rose-400" />
+                <span>Logout</span>
+              </button>
+            )}
             {onOpenShareApk && (
               <button
                 onClick={onOpenShareApk}

@@ -14,7 +14,7 @@ import {
   getAppDataSnapshot,
   initializeDatabase,
 } from './db/indexedDb';
-import { getCurrentUser } from './services/authService';
+import { getCurrentUser, logoutUser } from './services/authService';
 import { checkServerHealth } from './services/networkClient';
 import { markAppStart, recordStepMetric } from './services/performanceTracker';
 import { CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
@@ -256,6 +256,12 @@ export default function App() {
     setIsScannerOpen(true);
   };
 
+  const handleLogout = () => {
+    logoutUser();
+    setCurrentUser(null);
+    showToast('Logged out successfully', 'success');
+  };
+
   // First-launch / fresh install Google Sign-in flow (Requirement 1 & 2)
   if (!currentUser) {
     return (
@@ -271,7 +277,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col font-sans selection:bg-sky-500 selection:text-white relative">
+    <div className="min-h-screen bg-transparent text-slate-100 flex flex-col font-sans selection:bg-sky-500 selection:text-white relative">
       {/* Ambient Spatial Background Illumination */}
       <div className="spatial-mesh-background" aria-hidden="true" />
       <div className="spatial-grid-overlay" aria-hidden="true" />
@@ -300,6 +306,7 @@ export default function App() {
           onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
           onOpenShareApk={() => setIsShareApkOpen(true)}
           onOpenDatabaseReset={() => setIsDatabaseResetOpen(true)}
+          onLogout={handleLogout}
         />
       </div>
 
