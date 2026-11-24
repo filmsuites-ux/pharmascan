@@ -32,7 +32,7 @@ export const ShopLicenseVaultModal: React.FC<ShopLicenseVaultModalProps> = ({
 }) => {
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [shopName, setShopName] = useState(currentUser?.shopName || 'Jaya Medical Store');
+  const [shopName, setShopName] = useState(currentUser?.shopName || 'Srikrishna Medical');
   const [phone, setPhone] = useState(currentUser?.phone || '8008856166');
   const [pharmacistName, setPharmacistName] = useState(
     currentUser?.drugLicenses?.pharmacistName || 'P. Jaya Vardhan'
@@ -137,7 +137,7 @@ export const ShopLicenseVaultModal: React.FC<ShopLicenseVaultModalProps> = ({
               <div>
                 <div className="text-xs text-slate-400">Authorized Medical Store</div>
                 <div className="text-base font-extrabold text-white">
-                  {currentUser?.shopName || 'Jaya Medical Store'}
+                  {currentUser?.shopName || 'Srikrishna Medical'}
                 </div>
               </div>
             </div>

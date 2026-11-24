@@ -137,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <Store className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
                 <span className="font-extrabold text-[11px] text-emerald-300">
-                  {currentUser?.shopName || 'Jaya Medical Store'}
+                  {currentUser?.shopName || 'Srikrishna Medical'}
                 </span>
                 <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   Verified

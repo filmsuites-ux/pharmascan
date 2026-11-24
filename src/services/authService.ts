@@ -5,12 +5,12 @@ const AUTH_STORAGE_KEY = 'pharmascan_auth_session';
 // Master Admin Credentials
 export const MASTER_ADMIN_PHONE = '8008856166';
 export const MASTER_ADMIN_EMAIL = 'PjJaya8@gmail.com';
-export const DEFAULT_SHOP_NAME = 'Jaya Medical Store';
+export const DEFAULT_SHOP_NAME = 'Srikrishna Medical';
 
 // Default Google Account for this Pharmacy Build
 export const DEFAULT_GOOGLE_USER: Omit<PharmacyUserSession, 'lastLoginAt' | 'isAuthenticated'> = {
   email: MASTER_ADMIN_EMAIL,
-  name: 'Jaya Medical Store (Owner)',
+  name: 'Srikrishna Medical (Owner)',
   shopName: DEFAULT_SHOP_NAME,
   phone: MASTER_ADMIN_PHONE,
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&auto=format&fit=crop&q=80',
@@ -98,7 +98,7 @@ export async function loginWithPhoneOtp(
 
   const isMaster = cleanPhone === MASTER_ADMIN_PHONE;
   const shopName = shopDetails?.shopName?.trim() || (isMaster ? DEFAULT_SHOP_NAME : `Pharmacy Store (${cleanPhone.slice(-4)})`);
-  const name = shopDetails?.ownerName?.trim() || (isMaster ? 'Jaya Medical Store (Owner)' : `Owner (${cleanPhone})`);
+  const name = shopDetails?.ownerName?.trim() || (isMaster ? 'Srikrishna Medical (Owner)' : `Owner (${cleanPhone})`);
 
   const session: PharmacyUserSession = {
     email: isMaster ? MASTER_ADMIN_EMAIL : `shop_${cleanPhone}@pharmascan.local`,
@@ -168,7 +168,7 @@ export function getAllRegisteredShops(): any[] {
           phone: MASTER_ADMIN_PHONE,
           email: MASTER_ADMIN_EMAIL,
           shopName: DEFAULT_SHOP_NAME,
-          ownerName: 'Jaya Medical Store (Owner)',
+          ownerName: 'Srikrishna Medical (Owner)',
           lastLoginAt: new Date().toISOString(),
           isMasterAdmin: true,
         },
