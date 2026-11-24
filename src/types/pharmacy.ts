@@ -213,10 +213,20 @@ export interface OverallStats {
 export interface PharmacyUserSession {
   email: string;
   name: string;
+  shopName?: string;
+  phone?: string;
   avatar?: string;
   isAuthenticated: boolean;
   lastLoginAt: string;
-  provider: 'google';
+  provider: 'google' | 'phone';
+  isMasterAdmin?: boolean;
+  drugLicenses?: {
+    form20?: string;
+    form21?: string;
+    pharmacistName?: string;
+    pharmacistRegNo?: string;
+    renewalDate?: string;
+  };
 }
 
 export interface CloudBackupSummary {

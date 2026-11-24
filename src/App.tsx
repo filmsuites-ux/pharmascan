@@ -70,6 +70,8 @@ const WelcomeAuthScreen = lazy(() =>
   import('./components/auth/WelcomeAuthScreen').then((m) => ({ default: m.WelcomeAuthScreen }))
 );
 import { CloudBackupModal } from './components/auth/CloudBackupModal';
+import { ShopLicenseVaultModal } from './components/auth/ShopLicenseVaultModal';
+import { MasterAdminModal } from './components/auth/MasterAdminModal';
 import { DiagnosticsModal } from './components/common/DiagnosticsModal';
 import { DatabaseResetModal } from './components/common/DatabaseResetModal';
 import { ShareApkModal } from './components/common/ShareApkModal';
@@ -102,6 +104,8 @@ export default function App() {
     }
   });
   const [isCloudBackupOpen, setIsCloudBackupOpen] = useState<boolean>(false);
+  const [isShopVaultOpen, setIsShopVaultOpen] = useState<boolean>(false);
+  const [isMasterAdminOpen, setIsMasterAdminOpen] = useState<boolean>(false);
   const [isDiagnosticsOpen, setIsDiagnosticsOpen] = useState<boolean>(false);
   const [isDatabaseResetOpen, setIsDatabaseResetOpen] = useState<boolean>(false);
   const [isShareApkOpen, setIsShareApkOpen] = useState<boolean>(false);
@@ -303,6 +307,8 @@ export default function App() {
           stats={stats}
           currentUser={currentUser}
           onOpenCloudBackup={() => setIsCloudBackupOpen(true)}
+          onOpenShopVault={() => setIsShopVaultOpen(true)}
+          onOpenMasterAdmin={() => setIsMasterAdminOpen(true)}
           onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
           onOpenShareApk={() => setIsShareApkOpen(true)}
           onOpenDatabaseReset={() => setIsDatabaseResetOpen(true)}
@@ -472,6 +478,28 @@ export default function App() {
             showToast('Developer Reset: local data cleared and returned to Google Sign-In.');
           }}
           onOpenDatabaseReset={() => setIsDatabaseResetOpen(true)}
+        />
+      )}
+
+      {/* Shop License & Owner Vault Modal */}
+      {isShopVaultOpen && (
+        <ShopLicenseVaultModal
+          isOpen={isShopVaultOpen}
+          onClose={() => setIsShopVaultOpen(false)}
+          currentUser={currentUser}
+          onUpdateShopInfo={(updated) => {
+            setCurrentUser(updated);
+            showToast('Shop details & drug licenses updated.');
+          }}
+        />
+      )}
+
+      {/* Master Admin Super Portal Modal */}
+      {isMasterAdminOpen && (
+        <MasterAdminModal
+          isOpen={isMasterAdminOpen}
+          onClose={() => setIsMasterAdminOpen(false)}
+          currentUser={currentUser}
         />
       )}
 
