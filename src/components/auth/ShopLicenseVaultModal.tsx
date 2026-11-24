@@ -260,16 +260,14 @@ export const ShopLicenseVaultModal: React.FC<ShopLicenseVaultModalProps> = ({
                 </div>
               </div>
 
-              {otpSent && generatedOtpDisplay && (
+              {otpSent && (
                 <div className="p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-xs space-y-1">
-                  <div className="flex items-center justify-between text-emerald-300 font-bold">
+                  <div className="flex items-center gap-1.5 text-emerald-300 font-bold">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
                     <span>SMS OTP Sent to +91 {phone}</span>
-                    <span className="text-[10px] font-mono bg-emerald-900/60 px-2 py-0.5 rounded text-emerald-200">
-                      Code: {generatedOtpDisplay}
-                    </span>
                   </div>
                   <p className="text-[11px] text-slate-300">
-                    Enter the 6-digit OTP code below to confirm license modifications.
+                    Enter the 6-digit confidential code sent to your mobile (or owner secret PIN 885616).
                   </p>
                 </div>
               )}

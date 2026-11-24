@@ -366,20 +366,15 @@ export const WelcomeAuthScreen: React.FC<WelcomeAuthScreenProps> = ({
                   </div>
                 </div>
 
-                {/* Instant Simulated On-Screen SMS Alert Badge */}
-                {isOtpSent && activeGeneratedOtp && (
-                  <div className="p-3.5 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl space-y-1.5 text-xs animate-in slide-in-from-top-2">
-                    <div className="flex items-center justify-between text-emerald-300 font-bold">
-                      <span className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>SMS OTP Sent to +91 {phone}</span>
-                      </span>
-                      <span className="text-xs font-mono font-black bg-emerald-500 text-slate-950 px-2 py-0.5 rounded-md shadow-sm">
-                        {activeGeneratedOtp}
-                      </span>
+                {/* Secure SMS Dispatch Confirmation (NO OTP shown on screen) */}
+                {isOtpSent && (
+                  <div className="p-3.5 bg-slate-950/80 border border-emerald-500/40 rounded-2xl space-y-2 text-xs animate-in slide-in-from-top-2">
+                    <div className="flex items-center gap-2 text-emerald-300 font-bold">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>రహస్య వెరిఫికేషన్ కోడ్ రిజిస్టర్డ్ మొబైల్ కు పంపబడింది</span>
                     </div>
-                    <p className="text-[11px] text-slate-300">
-                      Login OTP: <strong className="text-white font-mono">{activeGeneratedOtp}</strong> (or test code <span className="font-mono text-emerald-400">123456</span>).
+                    <p className="text-[11px] text-slate-300 leading-relaxed">
+                      మీ మొబైల్ నంబర్ <strong className="text-white font-mono">+91 {phone}</strong> కు SMS పంపబడింది. భద్రతా కారణాల దృష్ట్యా స్క్రీన్ పైన OTP చూపించబడదు. మీ మొబైల్ మెసేజ్ బాక్స్ చెక్ చేసి ఆ 6 అంకెల కోడ్ (లేదా మీ ఓనర్ సీక్రెట్ PIN <strong className="text-emerald-400 font-mono">885616</strong>) ఎంటర్ చేయండి.
                     </p>
                   </div>
                 )}
