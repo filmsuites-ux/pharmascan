@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   ExternalLink,
   Store,
+  Send,
 } from 'lucide-react';
 import { PharmacyUserSession } from '../../types/pharmacy';
 import {
@@ -21,6 +22,12 @@ import {
   MASTER_ADMIN_EMAIL,
   getAllRegisteredShops,
 } from '../../services/authService';
+import {
+  getSmsGatewayConfig,
+  saveSmsGatewayConfig,
+  dispatchOtpSms,
+  SmsGatewayConfig,
+} from '../../services/smsService';
 
 interface MasterAdminModalProps {
   isOpen: boolean;
@@ -34,8 +41,14 @@ export const MasterAdminModal: React.FC<MasterAdminModalProps> = ({
   currentUser,
 }) => {
   const [shops, setShops] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'users' | 'analytics' | 'security'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'analytics' | 'security' | 'sms'>('users');
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // SMS Gateway state
+  const [smsConfig, setSmsConfig] = useState<SmsGatewayConfig>(() => getSmsGatewayConfig());
+  const [testSmsStatus, setTestSmsStatus] = useState<string | null>(null);
+  const [isTestingSms, setIsTestingSms] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -119,6 +132,18 @@ export const MasterAdminModal: React.FC<MasterAdminModalProps> = ({
           >
             <ShieldCheck className="w-4 h-4" />
             <span>OTP &amp; Security Shield</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('sms')}
+            className={`pb-3 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 border-b-2 ${
+              activeTab === 'sms'
+                ? 'border-amber-400 text-amber-300'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Smartphone className="w-4 h-4" />
+            <span>SMS Gateway Portal</span>
           </button>
         </div>
 
@@ -244,6 +269,131 @@ export const MasterAdminModal: React.FC<MasterAdminModalProps> = ({
                     <span className="font-bold text-emerald-400">Mandatory Active</span>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'sms' && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-bold text-white">
+                    <Smartphone className="w-4 h-4 text-amber-400" />
+                    <span>Real Mobile SMS Gateway (Fast2SMS / 2Factor India)</span>
+                  </div>
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      smsConfig.isEnabled && smsConfig.apiKey
+                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                        : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                    }`}
+                  >
+                    {smsConfig.isEnabled && smsConfig.apiKey ? 'GATEWAY ACTIVE' : 'PIN BACKUP ACTIVE'}
+                  </span>
+                </div>
+
+                <div className="space-y-3 text-xs">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                      SMS Provider
+                    </label>
+                    <select
+                      value={smsConfig.provider}
+                      onChange={(e) =>
+                        setSmsConfig({ ...smsConfig, provider: e.target.value as any })
+                      }
+                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:border-amber-500"
+                    >
+                      <option value="fast2sms">Fast2SMS (Direct Indian Telecom - Airtel/Jio/BSNL)</option>
+                      <option value="twofactor">2Factor.in (Indian Transactional OTP)</option>
+                      <option value="twilio">Twilio Global SMS</option>
+                      <option value="none">Master PIN Only (Offline Secure 885616)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                      Gateway API Key / Authorization Token
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="Paste your Fast2SMS or 2Factor API Key here"
+                      value={smsConfig.apiKey}
+                      onChange={(e) => setSmsConfig({ ...smsConfig, apiKey: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white font-mono outline-none focus:border-amber-500"
+                    />
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      Fast2SMS API key allows instant real SMS dispatch to your mobile. Get your free key at{' '}
+                      <a
+                        href="https://www.fast2sms.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-amber-400 hover:underline inline-flex items-center gap-0.5"
+                      >
+                        fast2sms.com <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-1">
+                    <input
+                      type="checkbox"
+                      id="enable_sms"
+                      checked={smsConfig.isEnabled}
+                      onChange={(e) =>
+                        setSmsConfig({ ...smsConfig, isEnabled: e.target.checked })
+                      }
+                      className="rounded accent-amber-500 cursor-pointer"
+                    />
+                    <label htmlFor="enable_sms" className="text-slate-300 font-semibold cursor-pointer">
+                      Enable Real Cellular SMS Dispatch for Login OTPs
+                    </label>
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        saveSmsGatewayConfig(smsConfig);
+                        setSaveSuccess(true);
+                        setTimeout(() => setSaveSuccess(false), 3000);
+                      }}
+                      className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all cursor-pointer shadow-md shadow-amber-500/20"
+                    >
+                      {saveSuccess ? 'Saved Successfully!' : 'Save Configuration'}
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={isTestingSms}
+                      onClick={async () => {
+                        setIsTestingSms(true);
+                        setTestSmsStatus('Sending test SMS to +91 ' + MASTER_ADMIN_PHONE + '...');
+                        const res = await dispatchOtpSms(MASTER_ADMIN_PHONE, '885616');
+                        setIsTestingSms(false);
+                        setTestSmsStatus(res.message);
+                      }}
+                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl border border-slate-700 transition-all cursor-pointer flex items-center gap-1.5"
+                    >
+                      <Send className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{isTestingSms ? 'Sending...' : 'Send Test SMS to +91 ' + MASTER_ADMIN_PHONE}</span>
+                    </button>
+                  </div>
+
+                  {testSmsStatus && (
+                    <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl text-[11px] text-slate-200 font-mono mt-2 flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>{testSmsStatus}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-amber-950/30 border border-amber-500/20 text-xs text-slate-300 space-y-1">
+                <span className="font-bold text-amber-300 block">💡 Telecom DLT / OTP Notes for India:</span>
+                <p className="text-[11px] leading-relaxed text-slate-400">
+                  Fast2SMS "Quick SMS" bypasses DLT header setup for test numbers. When no API key is provided, the system seamlessly uses your master private secret PIN (<span className="text-white font-mono font-bold">885616</span>) so you are never locked out of your pharmacy!
+                </p>
               </div>
             </div>
           )}

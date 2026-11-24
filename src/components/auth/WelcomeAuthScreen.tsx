@@ -24,7 +24,7 @@ import {
   DEFAULT_SHOP_NAME,
   loginWithGoogle,
   loginWithPhoneOtp,
-  generateVerificationOtp,
+  sendOtpToPhone,
 } from '../../services/authService';
 import {
   checkForAvailableBackup,
@@ -49,7 +49,7 @@ export const WelcomeAuthScreen: React.FC<WelcomeAuthScreenProps> = ({
   const [ownerName, setOwnerName] = useState<string>('Jaya Vardhan (Owner)');
   const [otpCode, setOtpCode] = useState<string>('');
   const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
-  const [activeGeneratedOtp, setActiveGeneratedOtp] = useState<string | null>(null);
+  const [smsDeliveryInfo, setSmsDeliveryInfo] = useState<string | null>(null);
   const [otpCountDown, setOtpCountDown] = useState<number>(0);
 
   // Google Sign-In states
@@ -71,28 +71,36 @@ export const WelcomeAuthScreen: React.FC<WelcomeAuthScreenProps> = ({
   const [pendingSession, setPendingSession] = useState<PharmacyUserSession | null>(null);
 
   // Trigger sending OTP to the given phone number
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     const cleanPhone = phone.replace(/\D/g, '');
     if (cleanPhone.length < 10) {
       setAuthError('దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ను నమోదు చేయండి (Please enter a valid 10-digit mobile number).');
       return;
     }
     setAuthError(null);
-    const result = generateVerificationOtp(cleanPhone);
-    setActiveGeneratedOtp(result.otp);
-    setIsOtpSent(true);
-    setOtpCountDown(60);
+    setIsSigningIn(true);
 
-    // Auto countdown timer
-    const interval = setInterval(() => {
-      setOtpCountDown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    try {
+      const result = await sendOtpToPhone(cleanPhone);
+      setIsSigningIn(false);
+      setIsOtpSent(true);
+      setSmsDeliveryInfo(result.smsResult.message);
+      setOtpCountDown(60);
+
+      // Auto countdown timer
+      const interval = setInterval(() => {
+        setOtpCountDown((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (err: any) {
+      setIsSigningIn(false);
+      setAuthError(err.message || 'OTP dispatch failed.');
+    }
   };
 
   // Verify OTP and complete login
@@ -376,6 +384,11 @@ export const WelcomeAuthScreen: React.FC<WelcomeAuthScreenProps> = ({
                     <p className="text-[11px] text-slate-300 leading-relaxed">
                       మీ మొబైల్ నంబర్ <strong className="text-white font-mono">+91 {phone}</strong> కు SMS పంపబడింది. భద్రతా కారణాల దృష్ట్యా స్క్రీన్ పైన OTP చూపించబడదు. మీ మొబైల్ మెసేజ్ బాక్స్ చెక్ చేసి ఆ 6 అంకెల కోడ్ (లేదా మీ ఓనర్ సీక్రెట్ PIN <strong className="text-emerald-400 font-mono">885616</strong>) ఎంటర్ చేయండి.
                     </p>
+                    {smsDeliveryInfo && (
+                      <div className="text-[10px] text-sky-400 font-mono bg-sky-950/60 p-2 rounded-lg border border-sky-800/40">
+                        {smsDeliveryInfo}
+                      </div>
+                    )}
                   </div>
                 )}
 

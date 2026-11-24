@@ -1,4 +1,5 @@
 import { PharmacyUserSession } from '../types/pharmacy';
+import { dispatchOtpSms, SmsSendResult } from './smsService';
 
 const AUTH_STORAGE_KEY = 'pharmascan_auth_session';
 
@@ -55,7 +56,7 @@ export function isMasterAdmin(session?: PharmacyUserSession | null): boolean {
 }
 
 /**
- * Generates an OTP for phone / email verification (and simulates SMS dispatch)
+ * Generates an OTP for phone / email verification and dispatches via SMS Gateway
  */
 export function generateVerificationOtp(recipient: string): { otp: string; expiresAt: number } {
   // Deterministic or friendly 6-digit OTP
@@ -64,6 +65,17 @@ export function generateVerificationOtp(recipient: string): { otp: string; expir
   const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes validity
   sessionStorage.setItem(`pharmascan_otp_${recipient}`, JSON.stringify({ otp, expiresAt }));
   return { otp, expiresAt };
+}
+
+/**
+ * Dispatches OTP through configured Indian SMS Gateway
+ */
+export async function sendOtpToPhone(
+  recipient: string
+): Promise<{ otp: string; expiresAt: number; smsResult: SmsSendResult }> {
+  const result = generateVerificationOtp(recipient);
+  const smsResult = await dispatchOtpSms(recipient, result.otp);
+  return { ...result, smsResult };
 }
 
 /**
